@@ -4,28 +4,50 @@ using UnityEngine;
 
 public class Animation : MonoBehaviour
 {
-    private Animator animator;
+    private CharacterController controlador;
+
+    public float velocidade = 5f;
+
+    public float velocidadeRotacao = 10f;
+
+    public AudioSource playerAudio;
+    public AudioClip walkSound;
+    public AudioClip coin;
 
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();    
+        controlador = GetComponent<CharacterController>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        float movimentoX = Input.GetAxis("Horizontal");
+        float movimentoZ = Input.GetAxis("Vertical");
+
+        Vector3 movimento = new Vector3(movimentoX, 0, movimentoZ);
+
+        if (movimento.magnitude > 0)
         {
-            animator.SetTrigger("Walk");
+            Vector3 direcao = new Vector3(movimentoX, 0, movimentoZ).normalized;
+
+            Quaternion novaRotacao = Quaternion.LookRotation(direcao);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, novaRotacao, velocidadeRotacao * Time.deltaTime);
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        controlador.Move(movimento * velocidade * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.W));
         {
-            animator.SetTrigger("Run");
+            playerAudio.clip = walkSound;
+            playerAudio.Play();
+
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.D)) ;
         {
-            animator.SetTrigger("Turn");
+            playerAudio.clip = coin;
+            playerAudio.Play();
+
         }
     }
+
 }
