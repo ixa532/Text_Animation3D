@@ -36,13 +36,14 @@ public class Animation : MonoBehaviour
         }
         controlador.Move(movimento * velocidade * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.W));
+        if (Input.GetKeyDown(KeyCode.W))
         {
+            Debug.Log("Entro");
             playerAudio.clip = walkSound;
             playerAudio.Play();
 
         }
-        if (Input.GetKeyDown(KeyCode.D)) ;
+        if (Input.GetKeyDown(KeyCode.D)) 
         {
             playerAudio.clip = coin;
             playerAudio.Play();
